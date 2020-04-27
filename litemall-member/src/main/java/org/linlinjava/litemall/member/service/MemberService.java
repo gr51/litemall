@@ -36,9 +36,6 @@ public class MemberService {
 	@Resource
 	private LitemallUserMapper litemallUserMapper;
 
-	@Autowired
-	WxOrderService wxOrderService;
-
 	@Resource
 	private LitemallMemberPriceMapper litemallMemberPriceMapper;
 
