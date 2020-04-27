@@ -15,5 +15,6 @@ public class MemberResponseCode {
     public static final Integer MEMBER_IS_EXIST = 800;
     public static final Integer CANNOT_BE_NEGATIVE = 801;
     public static final Integer USERID_NOT_PAYUID = 802;
-
+    public static final Integer ORDER_IS_DELETED = 803;
+    public static final Integer ORDER_IS_SUCCESS = 804;
 }

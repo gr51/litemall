@@ -135,39 +135,61 @@ public class MemberService {
 		if (!litemallOrderVo.getUserId().equals(Integer.parseInt(userId))){
 			return ResponseUtil.fail(MemberResponseCode.USERID_NOT_PAYUID,"当前用户不是支付人");
 		}
-		LitemallUserExample litemallUserExample = new LitemallUserExample();
 		LitemallUser litemallUser = litemallUserMapper.selectByPrimaryKey(Integer.parseInt(userId));
+		//判断订单状态
+		LitemallOrder litemallOrder = litemallOrderMapper.selectByPrimaryKey(litemallOrderVo.getOrderId());
+		if (litemallOrder.getDeleted()){
+			return ResponseUtil.fail(MemberResponseCode.ORDER_IS_DELETED,"此订单已被删除");
+		}else {
+			if ( OrderUtil.STATUS_CONFIRM.equals((Short)litemallOrder.getOrderStatus())){
+				return ResponseUtil.fail(MemberResponseCode.ORDER_IS_SUCCESS,"此订单已被支付");
+			}
+		}
+		LitemallOrderExample litemallOrderExample = new LitemallOrderExample();
+		litemallOrderExample.createCriteria().andDeletedEqualTo(false).andIdEqualTo(litemallOrder.getId());
+		LitemallUserExample litemallUserExample = new LitemallUserExample();
+		litemallUserExample.createCriteria().andDeletedEqualTo(false).andIdEqualTo(litemallUser.getId());
+
 		//获取用户会员到期时间和当前时间
 		LocalDateTime memberDatetime = litemallUser.getMemberDatetime();
 		LocalDateTime now = LocalDateTime.now();
 		//todo 获取到支付成功后 判断是否成功
-		try {
+/*		try {
 			Object o = wxOrderService.h5pay(Integer.parseInt(userId), JacksonUtil.toJson(litemallOrderVo),req);
 		} catch (Exception e) {
 			return ResponseUtil.fail(999, e.toString());
-		}
+		}*/
 		if (litemallOrderVo.getOrderType() == 1) {
 			//支付成功之后,更新会员状态
-			LitemallUser litemallUser1 = new LitemallUser();
 			//设置到期时间
 
 			LocalDateTime endTime = now.plusMonths(time);
-			litemallUser1.setMemberDatetime(endTime);
-			litemallUser1.setIsMember(true);
-			litemallUserMapper.updateByExampleSelective(litemallUser1, litemallUserExample);
+			litemallUser.setMemberDatetime(endTime);
+			litemallUser.setIsMember(true);
+			litemallUserMapper.updateByExampleSelective(litemallUser, litemallUserExample);
+			//修改支付成功的状态
+			litemallOrder.setOrderStatus(OrderUtil.STATUS_CONFIRM);
+			litemallOrderMapper.updateByExampleSelective(litemallOrder,litemallOrderExample);
 		} else if (litemallOrderVo.getOrderType() == 2) {
 			//判断用户是否还是会员
 			boolean before = memberDatetime.isBefore(now);
-			System.out.println(before);
+
 			//如果会员还没有到期,那就从未到期时间开始相加,反之从现在
 			if (!before) {
-				litemallUser.setMemberDatetime(memberDatetime.plusMinutes(time));
+				//时间按月份相加
+				litemallUser.setMemberDatetime(memberDatetime.plusMonths(time));
 				litemallUser.setIsMember(true);
 				litemallUserMapper.updateByExampleSelective(litemallUser, litemallUserExample);
+				//修改支付成功的状态
+				litemallOrder.setOrderStatus(OrderUtil.STATUS_CONFIRM);
+				litemallOrderMapper.updateByExample(litemallOrder,litemallOrderExample);
 			} else {
-				litemallUser.setMemberDatetime(now.plusMinutes(time));
+				litemallUser.setMemberDatetime(now.plusMonths(time));
 				litemallUser.setIsMember(true);
 				litemallUserMapper.updateByExampleSelective(litemallUser, litemallUserExample);
+				//修改支付成功的状态
+				litemallOrder.setOrderStatus(OrderUtil.STATUS_CONFIRM);
+				litemallOrderMapper.updateByExampleSelective(litemallOrder,litemallOrderExample);
 			}
 		} else {
 				return ResponseUtil.badArgumentValue();
