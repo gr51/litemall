@@ -63,7 +63,7 @@ public class MemberService {
 		List<LitemallOrder> orderList = orderService.queryByOrderType(userId, orderStatus, page, limit, sort, order);
 		return ResponseUtil.okList(orderList, orderList);
 	}
-
+	@Transactional
 	public Object purchaseMember(String userId, BigDecimal amount ) {
 		int userId1 = Integer.parseInt(userId);
 		LitemallUser litemallUser = litemallUserMapper.selectByPrimaryKey(Integer.parseInt(userId));
