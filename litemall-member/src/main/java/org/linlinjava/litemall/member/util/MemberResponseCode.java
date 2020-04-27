@@ -17,4 +17,5 @@ public class MemberResponseCode {
     public static final Integer USERID_NOT_PAYUID = 802;
     public static final Integer ORDER_IS_DELETED = 803;
     public static final Integer ORDER_IS_SUCCESS = 804;
+    public static final Integer MEMBER_NOT_FOUND = 805;
 }

@@ -125,10 +125,10 @@ public class MemberService {
 		LitemallUserExample litemallUserExample = new LitemallUserExample();
 		litemallUserExample.createCriteria().andIdEqualTo(userId).andIsMemberEqualTo(true).andMemberDatetimeLessThan(LocalDateTime.now());
 		LitemallUser litemallUser = litemallUserMapper.selectOneByExample(litemallUserExample);
-		if (null != litemallUser){
-			return ResponseUtil.ok();
+		if (null == litemallUser){
+			return ResponseUtil.fail(MemberResponseCode.MEMBER_NOT_FOUND,"非法用户");
 		}
-		return ResponseUtil.fail();
+		return ResponseUtil.ok(litemallUser.getIsMember());
 	}
 	@Transactional
 	public Object weChatPay( String userId, Integer time, LitemallOrderVo litemallOrderVo,HttpServletRequest req){
@@ -136,6 +136,9 @@ public class MemberService {
 			return ResponseUtil.fail(MemberResponseCode.USERID_NOT_PAYUID,"当前用户不是支付人");
 		}
 		LitemallUser litemallUser = litemallUserMapper.selectByPrimaryKey(Integer.parseInt(userId));
+		if (null == litemallUser){
+			return ResponseUtil.fail(MemberResponseCode.MEMBER_NOT_FOUND,"非法用户");
+		}
 		//判断订单状态
 		LitemallOrder litemallOrder = litemallOrderMapper.selectByPrimaryKey(litemallOrderVo.getOrderId());
 		if (litemallOrder.getDeleted()){
