@@ -132,7 +132,7 @@ public class MemberService {
 	}
 	@Transactional
 	public Object weChatPay( String userId, Integer time, LitemallOrderVo litemallOrderVo,HttpServletRequest req){
-		if (!litemallOrderVo.getUserId().equals(userId)){
+		if (!litemallOrderVo.getUserId().equals(Integer.parseInt(userId))){
 			return ResponseUtil.fail(MemberResponseCode.USERID_NOT_PAYUID,"当前用户不是支付人");
 		}
 		LitemallUserExample litemallUserExample = new LitemallUserExample();
@@ -143,7 +143,7 @@ public class MemberService {
 		//todo 获取到支付成功后 判断是否成功
 		try {
 			Object o = wxOrderService.h5pay(Integer.parseInt(userId), JacksonUtil.toJson(litemallOrderVo),req);
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			return ResponseUtil.fail(999, e.toString());
 		}
 		if (litemallOrderVo.getOrderType() == 1) {

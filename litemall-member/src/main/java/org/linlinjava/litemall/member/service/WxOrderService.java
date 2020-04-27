@@ -183,7 +183,7 @@ public class WxOrderService {
      * @return
      */
     @Transactional
-    public Object h5pay(Integer userId, String body, HttpServletRequest request) {
+    public Object h5pay(Integer userId, String body, HttpServletRequest request)throws Exception {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
@@ -221,7 +221,8 @@ public class WxOrderService {
             result = wxPayService.createOrder(orderRequest);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //TODO 这里先抛出异常
+            throw  e;
         }
 
         return ResponseUtil.ok(result);
