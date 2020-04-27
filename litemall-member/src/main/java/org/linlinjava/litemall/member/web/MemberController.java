@@ -1,7 +1,7 @@
 package org.linlinjava.litemall.member.web;
 
 
-import io.swagger.models.auth.In;
+
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -104,7 +103,7 @@ public class MemberController {
 
 	/**
 	 * 微信支付
-	 * @param userId;
+	 * @param userId，会员时间;
 	 * @return 价格
 	 */
 	@PostMapping("/weChatPay")

@@ -132,6 +132,9 @@ public class MemberService {
 	}
 	@Transactional
 	public Object weChatPay( String userId, Integer time, LitemallOrderVo litemallOrderVo,HttpServletRequest req){
+		if (!litemallOrderVo.getUserId().equals(userId)){
+			return ResponseUtil.fail(MemberResponseCode.USERID_NOT_PAYUID,"当前用户不是支付人");
+		}
 		LitemallUserExample litemallUserExample = new LitemallUserExample();
 		LitemallUser litemallUser = litemallUserMapper.selectByPrimaryKey(Integer.parseInt(userId));
 		//获取用户会员到期时间和当前时间
