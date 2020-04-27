@@ -11,7 +11,8 @@ public class MemberResponseCode {
     public static final Integer AUTH_INVALID_MOBILE = 707;
     public static final Integer AUTH_OPENID_UNACCESS = 708;
     public static final Integer AUTH_OPENID_BINDED = 709;
-
-    public static final Integer MEMBER_EXIST = 800;
+    //用户已存在
+    public static final Integer MEMBER_IS_EXIST = 800;
+    public static final Integer CANNOT_BE_NEGATIVE = 801;
 
 }

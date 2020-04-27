@@ -31,6 +31,8 @@ public class OrderUtil {
     public static final Short STATUS_REFUND = 202;
     public static final Short STATUS_REFUND_CONFIRM = 203;
     public static final Short STATUS_AUTO_CONFIRM = 402;
+    public static final Short PURCHASE_MEMBER_TYPE = 1;
+    public static final Short MEMBER_RENEWAL_TYPE = 2;
 
     public static String orderStatusText(LitemallOrder order) {
         int status = order.getOrderStatus().intValue();
@@ -108,15 +110,7 @@ public class OrderUtil {
             handleOption.setComment(true);
             handleOption.setRebuy(true);
             handleOption.setAftersale(true);
-        } else if(status == 501) {
-            // 创建会员订单
-            handleOption.setConfirm(true);
-            handleOption.setPay(true);
-        }else if(status == 601) {
-            // 续费会员订单
-            handleOption.setConfirm(true);
-            handleOption.setPay(true);}
-        else {
+        } else {
                 throw new IllegalStateException("status不支持");
             }
         return handleOption;
@@ -146,8 +140,8 @@ public class OrderUtil {
 //            status.add((short)402);
         } else if (showType.equals(5)) {
             // 会员订单
-            status.add((short) 501);
-            status.add((short) 601);
+            status.add((short) 1);
+            status.add((short) 2);
         } else {
             return null;
         }

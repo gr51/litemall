@@ -499,10 +499,10 @@ flush privilege
 spring:
   datasource:
     druid:
-      url:  localhost:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
+      url:  jdbc:mysql://localhost:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
       driver-class-name:  com.mysql.jdbc.Driver
       username:  root
-      password:  root
+      password:  123456
       initial-size:  10
       max-active:  50
       min-idle:  10
