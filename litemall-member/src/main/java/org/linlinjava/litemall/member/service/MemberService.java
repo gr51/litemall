@@ -36,6 +36,9 @@ public class MemberService {
 	@Resource
 	private LitemallUserMapper litemallUserMapper;
 
+	@Autowired
+	WxOrderService wxOrderService;
+
 	@Resource
 	private LitemallMemberPriceMapper litemallMemberPriceMapper;
 
@@ -154,11 +157,11 @@ public class MemberService {
 		LocalDateTime memberDatetime = litemallUser.getMemberDatetime();
 		LocalDateTime now = LocalDateTime.now();
 		//todo 获取到支付成功后 判断是否成功
-/*		try {
+		try {
 			Object o = wxOrderService.h5pay(Integer.parseInt(userId), JacksonUtil.toJson(litemallOrderVo),req);
 		} catch (Exception e) {
 			return ResponseUtil.fail(999, e.toString());
-		}*/
+		}
 		if (litemallOrderVo.getOrderType() == 1) {
 			//支付成功之后,更新会员状态
 			//设置到期时间
