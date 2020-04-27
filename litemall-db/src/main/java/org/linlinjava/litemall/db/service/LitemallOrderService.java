@@ -98,7 +98,7 @@ public class LitemallOrderService {
         LitemallOrderExample.Criteria criteria = example.or();
         criteria.andUserIdEqualTo(userId);
         if (orderType != null) {
-            criteria.andOrderStatusIn(orderType);
+            criteria.andOrderTypeIn(orderType);
         }
         criteria.andDeletedEqualTo(false);
         if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
